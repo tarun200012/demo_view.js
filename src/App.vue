@@ -1,18 +1,40 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+      <h1>My todos app</h1>
+      <ul>
+        <li v-for="post of posts" :key="post.id">{{post.title}}</li>
+      </ul>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import axios from "axios";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+    posts: []
+    }
+    
+  },
+async created(){
+  try{
+    const res= await axios.get("http://localhost:3000/api/post");
+    console.log(res);
+    this.posts= res.data.data;
   }
+  catch(e){
+    console.error(e);
+  }
+
+}
+
 }
 </script>
+
+
 
 <style>
 #app {
@@ -20,7 +42,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #02070c;
   margin-top: 60px;
 }
 </style>
