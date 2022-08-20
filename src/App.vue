@@ -1,6 +1,7 @@
 <template>
   <div id="app">
       <h1>My todos app</h1>
+      <input type="text" v-model="postdata" @keyup.enter="addPost">
       <ul>
         <li v-for="post of posts" :key="post.id">{{post.title}}</li>
       </ul>
@@ -15,7 +16,8 @@ export default {
   name: 'App',
   data() {
     return {
-    posts: []
+    posts: [],
+    postdata: ""
     }
     
   },
@@ -28,7 +30,14 @@ async created(){
   catch(e){
     console.error(e);
   }
+},
+methods:{
+  async addPost(){
+    const res = await axios.post("http://localhost:3000/api/post", {title: this.postdata});
+    this.posts=[...this.posts,res.data.data];
 
+    this.postdata="";
+  }
 }
 
 }
